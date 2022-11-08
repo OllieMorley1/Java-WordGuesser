@@ -6,7 +6,7 @@ import java.util.Random;
 public class Game {
 
     private Integer attempts = 10;
-    public String word;
+    private String word;
     private ArrayList<Character> guessedLetters = new ArrayList<Character>();
 
     public Game(WordChooser choose_word){
