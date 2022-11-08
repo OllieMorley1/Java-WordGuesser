@@ -9,22 +9,31 @@ import java.util.Scanner;
 public class App {
 
     public static ArrayList<Game> multiplayer = new ArrayList<Game>();
+    
     public static void main(String[] args) {
 
 // Set up
         WordChooser word_chooser = new WordChooser();
         Masker masker = new Masker();
         Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter name for player 1:");
+        String player1name = scanner.nextLine();
+        System.out.println("Enter name for player 2:");
+        String player2name = scanner.nextLine();
         
-        // Game 1
+        // Game
         
         Game game1 = new Game(word_chooser);
+        Game game2 = new Game(word_chooser);
         multiplayer.add(game1);
+        multiplayer.add(game2);
+        System.out.println("Welcome! Todays words to guess are:");
+        System.out.println(String.format("%s: %s", player1name, game1.getWordToGuess(masker)));
+        System.out.println(String.format("%s: %s", player2name, game2.getWordToGuess(masker)));
         
-        System.out.println(game1.getWordToGuess(masker));
-        
-        while(game1.getRemainingAttempts() != 0 && game1.GameWon()==false){
-            System.out.println(String.format("Player 1: Enter one letter to guess (%d attempts remaining)", game1.getRemainingAttempts()));
+        while(game1.GameLost() == false && game1.GameWon()==false && game2.GameLost() == false && game2.GameWon()==false ){
+            System.out.println(String.format("%s: Enter one letter to guess (%d attempts remaining). %s", player1name, game1.getRemainingAttempts(), game1.getWordToGuess(masker)));
             Character guess = scanner.nextLine().charAt(0);
             game1.guessLetter(guess);
             if(game1.GameLost()== true){
@@ -33,29 +42,21 @@ public class App {
                 System.out.println(game1.getWordToGuess(masker));
             }
             if(game1.GameWon()==true){
-                System.out.println("You win!");
+                System.out.println(String.format("%s wins!", player1name));
             }
-        }
-        // Game 2
-        
-        Game game2 = new Game(word_chooser);
-        multiplayer.add(game2);
 
-        System.out.println(game2.getWordToGuess(masker));
-        
-        while(game2.getRemainingAttempts() != 0 && game2.GameWon()==false){
-            System.out.println(String.format("Player 2: Enter one letter to guess (%d attempts remaining)", game2.getRemainingAttempts()));
-            Character guess = scanner.nextLine().charAt(0);
-            game2.guessLetter(guess);
+            System.out.println(String.format("%s: Enter one letter to guess (%d attempts remaining). %s", player2name, game2.getRemainingAttempts(), game2.getWordToGuess(masker)));
+            Character guess2 = scanner.nextLine().charAt(0);
+            game2.guessLetter(guess2);
             if(game2.GameLost()== true){
                 System.out.println("0 Attempts remaining. You lose!");
             } else{
                 System.out.println(game2.getWordToGuess(masker));
             }
             if(game2.GameWon()==true){
-                System.out.println("You win!");
-            }
-            }
+                System.out.println(String.format("%s wins!", player2name));
+        }
     }
+}
 }
 
